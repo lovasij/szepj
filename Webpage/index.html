@@ -113,7 +113,7 @@ USE `112e.betegnyilvantartas`;
 -- PACIENS
 -- -----------------------------
 CREATE TABLE IF NOT EXISTS `PACIENS` (
-  `pID` INT NOT NULL,
+  `pID` BIGINT NOT NULL,
   `pname` VARCHAR(45) NULL,
   `padress` VARCHAR(45) NOT NULL,
   `pphone` VARCHAR(45) NULL,
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `PACIENS` (
 -- -----------------------------
 CREATE TABLE IF NOT EXISTS `VIZSGALAT` (
   `vID` INT NOT NULL AUTO_INCREMENT,
-  `pID` INT NULL,
+  `pID` BIGINT NULL,
   `date` DATE NOT NULL,
   PRIMARY KEY (`vID`),
   INDEX `idx_vizsgalat_pid` (`pID`),
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `MIT_KAP` (
 -- MIRE_ERZEKENY
 -- -----------------------------
 CREATE TABLE IF NOT EXISTS `MIRE_ERZEKENY` (
-  `pID` INT NOT NULL,
+  `pID` BIGINT NOT NULL,
   `gyID` INT NOT NULL,
 
   PRIMARY KEY (`pID`, `gyID`),
@@ -227,8 +227,6 @@ CREATE TABLE IF NOT EXISTS `DIAGNOZIS` (
 ) ENGINE=InnoDB;
         </code></pre>
     </section>
-
-    <!-- EREDMÉNYEK -->
     <section id="lekerdezes">
         <h2>Lekérdezések</h2>
 
