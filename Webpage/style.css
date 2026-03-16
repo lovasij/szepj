@@ -1,0 +1,144 @@
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+
+        .lexend{
+            font-family: "Lexend", sans-serif;
+            font-optical-sizing: auto;
+            font-style: normal;
+}
+        body {
+            font-family: 'Lexend', sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 40px 40px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.4em;
+            font-weight: 600;
+        }
+
+        header p {
+            margin-top: 10px;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: #ffffff;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #0077b6;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #00b4d8;
+            transform: scale(1.05);
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            font-size: 1.9em;
+            color: #0077b6;
+            border-left: 6px solid #00b4d8;
+            padding-left: 12px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            margin-top: 25px;
+            color: #0096c7;
+        }
+
+        ul li {
+            margin-bottom: 6px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #caf0f8;
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin-right: 6px;
+            font-size: 0.85em;
+            color: #0077b6;
+            font-weight: 600;
+        }
+
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #00b4d8;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        table, th, td {
+            border: 1px solid #d0d0d0;
+        }
+
+        th {
+            background: #e0f7ff;
+            color: #0077b6;
+        }
+
+        th, td {
+            padding: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #f1f1f1;
+            margin-top: 40px;
+            color: #555;
+        }
+
+        /* Finom animációk */
+        section {
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }

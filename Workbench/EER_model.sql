@@ -5,7 +5,7 @@ USE `112e.betegnyilvantartas`;
 -- PACIENS
 -- -----------------------------
 CREATE TABLE IF NOT EXISTS `PACIENS` (
-  `pID` INT NOT NULL AUTO_INCREMENT,
+  `pID` INT NOT NULL,
   `pname` VARCHAR(45) NULL,
   `padress` VARCHAR(45) NOT NULL,
   `pphone` VARCHAR(45) NULL,
