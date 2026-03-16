@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Házi orvosi betegnyilvántartás - Adatbázis dokumentáció</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Házi orvosi betegnyilvántartás</h1>
+    <p>Adatbázis dokumentáció - modellek, SQL kód, lekérdezések</p>
+</header>
+
+<nav>
+    <a href="#feladat">Feladat</a>
+    <a href="#modellek">Modellek</a>
+    <a href="#kod">SQL kód</a>
+    <a href="#lekerdezes">Lekérdezések</a>
+</nav>
+
+<main>
+
+    <!-- FELADAT -->
+    <section id="feladat">
+        <h2>Feladat leírása</h2>
+        <p>A cél egy háziorvosi betegnyilvántartó rendszer adatbázisának megtervezése és dokumentálása.</p>
+
+        <h3>Az adatbázisnak tartalmaznia kell:</h3>
+        <ul>
+            <li>Páciensek személyes adatai</li>
+            <li>Gyógyszerérzékenységek</li>
+            <li>Vizsgálatok időpontjai</li>
+            <li>Diagnózisok (betegségek)</li>
+            <li>Betegségekhez tartozó gyógyszerek</li>
+        </ul>
+
+        <h3>Feltételezések</h3>
+        <ul>
+            <li>Egy vizsgálaton több betegség is lehet</li>
+            <li>Egy betegséghez több gyógyszer is tartozhat</li>
+            <li>Egy páciens több gyógyszerre is érzékeny lehet</li>
+            <li>Egy vizsgálatot a dátum + vizsgálat ID azonosít</li>
+        </ul>
+    </section>
+
+    <!-- MODELLEK -->
+    <section id="modellek">
+        <h2> Relációs Modell</h2>
+
+        <h3>Fő táblák</h3>
+        <ul>
+            <li><span class="tag">PACIENS</span> páciensek adatai</li>
+            <li><span class="tag">VIZSGALAT</span> vizsgálatok</li>
+            <li><span class="tag">BETEGSEG</span> betegségek</li>
+            <li><span class="tag">GYOGYSZER</span> gyógyszerek</li>
+            <li><span class="tag">MIT_KAP</span> betegség–gyógyszer kapcsolatok</li>
+            <li><span class="tag">MIRE_ERZEKENY</span> páciens–gyógyszer érzékenységek</li>
+            <li><span class="tag">DIAGNOZIS</span> vizsgálat–betegség kapcsolatok</li>
+        </ul>
+
+        <h3>Attribútumok</h3>
+
+        <h4>PACIENS</h4>
+        <table>
+            <tr><th>Attribútum</th><th>Típus</th><th>Leírás</th></tr>
+            <tr><td>pID</td><td>INT</td><td>Elsődleges kulcs</td></tr>
+            <tr><td>pname</td><td>VARCHAR(45)</td><td>Név</td></tr>
+            <tr><td>padress</td><td>VARCHAR(45)</td><td>Cím</td></tr>
+            <tr><td>pphone</td><td>VARCHAR(45)</td><td>Telefonszám</td></tr>
+        </table>
+
+        <h4>VIZSGALAT</h4>
+        <table>
+            <tr><th>Attribútum</th><th>Típus</th><th>Leírás</th></tr>
+            <tr><td>vID</td><td>INT</td><td>Vizsgálat azonosító</td></tr>
+            <tr><td>pID</td><td>INT</td><td>Páciens ID</td></tr>
+            <tr><td>date</td><td>DATE</td><td>Dátum</td></tr>
+        </table>
+
+        <h4>BETEGSEG</h4>
+        <table>
+            <tr><th>Attribútum</th><th>Típus</th><th>Leírás</th></tr>
+            <tr><td>bID</td><td>INT</td><td>Betegség ID</td></tr>
+            <tr><td>bname</td><td>VARCHAR(45)</td><td>Betegség neve</td></tr>
+        </table>
+
+        <h4>GYOGYSZER</h4>
+        <table>
+            <tr><th>Attribútum</th><th>Típus</th><th>Leírás</th></tr>
+            <tr><td>gyID</td><td>INT</td><td>Gyógyszer ID</td></tr>
+            <tr><td>gyname</td><td>VARCHAR(45)</td><td>Gyógyszer neve</td></tr>
+        </table>
+
+        <h3>Kapcsolatok</h3>
+        <ul>
+            <li>Páciens – Vizsgálat: <strong>1:N</strong></li>
+            <li>Vizsgálat – Betegség: <strong>N:N</strong> (DIAGNOZIS)</li>
+            <li>Betegség – Gyógyszer: <strong>N:N</strong> (MIT_KAP)</li>
+            <li>Páciens – Gyógyszer (érzékenység): <strong>N:N</strong> (MIRE_ERZEKENY)</li>
+        </ul>
+    </section>
+
+    <!-- SQL KÓD -->
+    <section id="kod">
+        <h2>Teljes SQL kód</h2>
+        <pre><code>
+-- Schema
+USE `112e.betegnyilvantartas`;
+
+-- -----------------------------
+-- PACIENS
+-- -----------------------------
+CREATE TABLE IF NOT EXISTS `PACIENS` (
+  `pID` INT NOT NULL,
+  `pname` VARCHAR(45) NULL,
+  `padress` VARCHAR(45) NOT NULL,
+  `pphone` VARCHAR(45) NULL,
+  PRIMARY KEY (`pID`)
+) ENGINE=InnoDB;
+
+-- -----------------------------
+-- VIZSGALAT
+-- -----------------------------
+CREATE TABLE IF NOT EXISTS `VIZSGALAT` (
+  `vID` INT NOT NULL AUTO_INCREMENT,
+  `pID` INT NULL,
+  `date` DATE NOT NULL,
+  PRIMARY KEY (`vID`),
+  INDEX `idx_vizsgalat_pid` (`pID`),
+  CONSTRAINT `fk_vizsgalat_paciens`
+    FOREIGN KEY (`pID`)
+    REFERENCES `PACIENS` (`pID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+) ENGINE=InnoDB;
+
+-- -----------------------------
+-- BETEGSEG
+-- -----------------------------
+CREATE TABLE IF NOT EXISTS `BETEGSEG` (
+  `bID` INT NOT NULL AUTO_INCREMENT,
+  `bname` VARCHAR(45) NULL,
+  PRIMARY KEY (`bID`)
+) ENGINE=InnoDB;
+
+-- -----------------------------
+-- GYOGYSZER
+-- -----------------------------
+CREATE TABLE IF NOT EXISTS `GYOGYSZER` (
+  `gyID` INT NOT NULL AUTO_INCREMENT,
+  `gyname` VARCHAR(45) NULL,
+  PRIMARY KEY (`gyID`)
+) ENGINE=InnoDB;
+
+-- -----------------------------
+-- MIT_KAP
+-- -----------------------------
+CREATE TABLE IF NOT EXISTS `MIT_KAP` (
+  `bID` INT NOT NULL,
+  `gyID` INT NOT NULL,
+  PRIMARY KEY (`bID`, `gyID`),
+
+  INDEX `idx_mitkap_gyid` (`gyID`),
+
+  CONSTRAINT `fk_mitkap_betegseg`
+    FOREIGN KEY (`bID`)
+    REFERENCES `BETEGSEG` (`bID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+
+  CONSTRAINT `fk_mitkap_gyogyszer`
+    FOREIGN KEY (`gyID`)
+    REFERENCES `GYOGYSZER` (`gyID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+) ENGINE=InnoDB;
+
+-- -----------------------------
+-- MIRE_ERZEKENY
+-- -----------------------------
+CREATE TABLE IF NOT EXISTS `MIRE_ERZEKENY` (
+  `pID` INT NOT NULL,
+  `gyID` INT NOT NULL,
+
+  PRIMARY KEY (`pID`, `gyID`),
+
+  INDEX `idx_mire_gyid` (`gyID`),
+
+  CONSTRAINT `fk_mire_paciens`
+    FOREIGN KEY (`pID`)
+    REFERENCES `PACIENS` (`pID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+
+  CONSTRAINT `fk_mire_gyogyszer`
+    FOREIGN KEY (`gyID`)
+    REFERENCES `GYOGYSZER` (`gyID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+) ENGINE=InnoDB;
+
+-- -----------------------------
+-- DIAGNOZIS
+-- -----------------------------
+CREATE TABLE IF NOT EXISTS `DIAGNOZIS` (
+  `vID` INT NOT NULL,
+  `datum` DATE NULL,
+  `bID` INT NOT NULL,
+
+  PRIMARY KEY (`vID`, `bID`),
+
+  INDEX `idx_diag_bID` (`bID`),
+
+  CONSTRAINT `fk_diag_vizsgalat`
+    FOREIGN KEY (`vID`)
+    REFERENCES `VIZSGALAT` (`vID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+
+  CONSTRAINT `fk_diag_betegseg`
+    FOREIGN KEY (`bID`)
+    REFERENCES `BETEGSEG` (`bID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+) ENGINE=InnoDB;
+        </code></pre>
+    </section>
+
+    <!-- EREDMÉNYEK -->
+    <section id="lekerdezes">
+        <h2>Lekérdezések</h2>
+
+        <h3>1. Összes páciens</h3>
+        <pre><code>SELECT * FROM PACIENS;</code></pre>
+
+        <h3>2. Egy páciens vizsgálatai</h3>
+        <pre><code>
+            SELECT v.vID, v.date
+            FROM VIZSGALAT v
+            JOIN PACIENS p ON p.pID = v.pID
+            WHERE p.pname = 'Minta Béla';
+        </code></pre>
+
+        <h3>3. Diagnózisok egy vizsgálaton</h3>
+        <pre><code>
+        SELECT b.bname
+        FROM DIAGNOZIS d
+        JOIN BETEGSEG b ON b.bID = d.bID
+        WHERE d.vID = 1;
+        </code></pre>
+    </section>
+
+<section id="er-modell">
+
+<h2>ER-modell</h2>
+<p>Az alábbi ábra a rendszer fő entitásait és azok kapcsolatát mutatja be.</p>
+
+<div class="card-container">
+
+<div class="card">
+<div class="card__front">PACIENS</div>
+<div class="card__content">
+<h3>PACIENS</h3>
+<ul>
+<li>pID (PK)</li>
+<li>pname</li>
+<li>padress</li>
+<li>pphone</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<div class="card__front">VIZSGALAT</div>
+<div class="card__content">
+<h3>VIZSGALAT</h3>
+<ul>
+<li>vID (PK)</li>
+<li>pID (FK)</li>
+<li>date</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<div class="card__front">DIAGNOZIS</div>
+<div class="card__content">
+<h3>DIAGNOZIS</h3>
+<ul>
+<li>vID (FK)</li>
+<li>bID (FK)</li>
+<li>datum</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<div class="card__front">BETEGSEG</div>
+<div class="card__content">
+<h3>BETEGSEG</h3>
+<ul>
+<li>bID (PK)</li>
+<li>bname</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<div class="card__front">MIT_KAP</div>
+<div class="card__content">
+<h3>MIT_KAP</h3>
+<ul>
+<li>bID (FK)</li>
+<li>gyID (FK)</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<div class="card__front">GYOGYSZER</div>
+<div class="card__content">
+<h3>GYOGYSZER</h3>
+<ul>
+<li>gyID (PK)</li>
+<li>gyname</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<div class="card__front">MIRE_ERZEKENY</div>
+<div class="card__content">
+<h3>MIRE_ERZEKENY</h3>
+<ul>
+<li>pID (FK)</li>
+<li>gyID (FK)</li>
+</ul>
+</div>
+</div>
+
+</div>
+        <h3>Kapcsolatok</h3>
+        <ul>
+            <li>Páciens – Vizsgálat: <strong>1:N</strong></li>
+            <li>Vizsgálat – Betegség: <strong>N:N</strong> (DIAGNOZIS)</li>
+            <li>Betegség – Gyógyszer: <strong>N:N</strong> (MIT_KAP)</li>
+            <li>Páciens – Gyógyszer (érzékenység): <strong>N:N</strong> (MIRE_ERZEKENY)</li>
+        </ul>
+</section>
+    
+
+</main>
+
+<footer>
+    Házi orvosi betegnyilvántartás – Dokumentáció • 2026 • Peigelbeck János ; Szücs Elizabet
+</footer>
+
+</body>
+</html>
