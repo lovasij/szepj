@@ -230,7 +230,7 @@ CREATE TABLE IF NOT EXISTS `DIAGNOZIS` (
 
     <!-- EREDMÉNYEK -->
     <section id="lekerdezes">
-        <h2>Eredmények és lekérdezések</h2>
+        <h2>Lekérdezések</h2>
 
         <h3>1. Összes páciens</h3>
         <pre><code>SELECT * FROM PACIENS;</code></pre>
@@ -252,77 +252,103 @@ CREATE TABLE IF NOT EXISTS `DIAGNOZIS` (
         </code></pre>
     </section>
 
-    <section id="er-modell">
-        <h2>ER-modell</h2>
-        <p>Az alábbi ábra a rendszer fő entitásait és azok kapcsolatát mutatja be.</p>
-        <div>
-            <h3>PACIENS</h3>
-            <ul>
-                <li>pID (PK)</li>
-                <li>pname</li>
-                <li>padress</li>
-                <li>pphone</li>
-            </ul>
-        </div>
-    
-            <!-- VIZSGALAT -->
-            <div>
-                <h3>VIZSGALAT</h3>
-                <ul>
-                    <li>vID (PK)</li>
-                    <li>pID (FK)</li>
-                    <li>date</li>
-                </ul>
-            </div>
-    
-            <!-- DIAGNOZIS -->
-            <div>
-                <h3>DIAGNOZIS</h3>
-                <ul>
-                    <li>vID (FK)</li>
-                    <li>bID (FK)</li>
-                    <li>datum</li>
-                </ul>
-            </div>
-    
-            <!-- BETEGSEG -->
-            <div>
-                <h3>BETEGSEG</h3>
-                <ul>
-                    <li>bID (PK)</li>
-                    <li>bname</li>
-                </ul>
-            </div>
-    
-            <!-- MIT_KAP -->
-            <div>
-                <h3>MIT_KAP</h3>
-                <ul>
-                    <li>bID (FK)</li>
-                    <li>gyID (FK)</li>
-                </ul>
-            </div>
-    
-            <!-- GYOGYSZER -->
-            <div>
-                <h3>GYOGYSZER</h3>
-                <ul>
-                    <li>gyID (PK)</li>
-                    <li>gyname</li>
-                </ul>
-            </div>
-    
-            <!-- MIRE_ERZEKENY -->
-            <div>
-                <h3>MIRE_ERZEKENY</h3>
-                <ul>
-                    <li>pID (FK)</li>
-                    <li>gyID (FK)</li>
-                </ul>
-            </div>
-    
-        </div>
-    </section>
+<section id="er-modell">
+
+<h2>ER-modell</h2>
+<p>Az alábbi ábra a rendszer fő entitásait és azok kapcsolatát mutatja be.</p>
+
+<div class="card-container">
+
+<div class="card">
+<div class="card__front">PACIENS</div>
+<div class="card__content">
+<h3>PACIENS</h3>
+<ul>
+<li>pID (PK)</li>
+<li>pname</li>
+<li>padress</li>
+<li>pphone</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<div class="card__front">VIZSGALAT</div>
+<div class="card__content">
+<h3>VIZSGALAT</h3>
+<ul>
+<li>vID (PK)</li>
+<li>pID (FK)</li>
+<li>date</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<div class="card__front">DIAGNOZIS</div>
+<div class="card__content">
+<h3>DIAGNOZIS</h3>
+<ul>
+<li>vID (FK)</li>
+<li>bID (FK)</li>
+<li>datum</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<div class="card__front">BETEGSEG</div>
+<div class="card__content">
+<h3>BETEGSEG</h3>
+<ul>
+<li>bID (PK)</li>
+<li>bname</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<div class="card__front">MIT_KAP</div>
+<div class="card__content">
+<h3>MIT_KAP</h3>
+<ul>
+<li>bID (FK)</li>
+<li>gyID (FK)</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<div class="card__front">GYOGYSZER</div>
+<div class="card__content">
+<h3>GYOGYSZER</h3>
+<ul>
+<li>gyID (PK)</li>
+<li>gyname</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<div class="card__front">MIRE_ERZEKENY</div>
+<div class="card__content">
+<h3>MIRE_ERZEKENY</h3>
+<ul>
+<li>pID (FK)</li>
+<li>gyID (FK)</li>
+</ul>
+</div>
+</div>
+
+</div>
+        <h3>Kapcsolatok</h3>
+        <ul>
+            <li>Páciens – Vizsgálat: <strong>1:N</strong></li>
+            <li>Vizsgálat – Betegség: <strong>N:N</strong> (DIAGNOZIS)</li>
+            <li>Betegség – Gyógyszer: <strong>N:N</strong> (MIT_KAP)</li>
+            <li>Páciens – Gyógyszer (érzékenység): <strong>N:N</strong> (MIRE_ERZEKENY)</li>
+        </ul>
+</section>
     
 
 </main>
