@@ -2,14 +2,14 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Házi orvosi betegnyilvántartás - Adatbázis dokumentáció</title>
+    <title>Háziorvosi betegnyilvántartás - Adatbázis dokumentáció</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
 
 <header>
-    <h1>Házi orvosi betegnyilvántartás</h1>
+    <h1>Háziorvosi betegnyilvántartás</h1>
     <p>Adatbázis dokumentáció - modellek, SQL kód, lekérdezések</p>
 </header>
 
@@ -346,6 +346,14 @@ CREATE TABLE IF NOT EXISTS `DIAGNOZIS` (
             <li>Betegség – Gyógyszer: <strong>N:N</strong> (MIT_KAP)</li>
             <li>Páciens – Gyógyszer (érzékenység): <strong>N:N</strong> (MIRE_ERZEKENY)</li>
         </ul>
+
+        <button class="button" id="openBtn">
+            ER-modell megtekintése képen
+        </button>
+        <div id="imageModal" class="modal">
+            <span class="close" id="closeBtn">&times;</span>
+            <img id="image" src="./Webpage/Images/EER modell.png" alt="ER-modell">
+        </div>
 </section>
     
 
@@ -354,6 +362,26 @@ CREATE TABLE IF NOT EXISTS `DIAGNOZIS` (
 <footer>
     Házi orvosi betegnyilvántartás – Dokumentáció • 2026 • Peigelbeck János ; Szücs Elizabet
 </footer>
+
+<script>
+  const openBtn = document.getElementById("openBtn");
+  const modal = document.getElementById("imageModal");
+  const closeBtn = document.getElementById("closeBtn");
+
+  openBtn.addEventListener("click", () => {
+    modal.style.display = "flex";
+  });
+
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+</script>
 
 </body>
 </html>
